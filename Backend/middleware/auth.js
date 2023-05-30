@@ -1,6 +1,7 @@
 const { JWT_SECRET_KEY } = require("../configs/config");
 const jwt = require('jsonwebtoken')
-const {user} = require('../Database/users')
+const {userModel} = require('../Database/users')
+
 async function auth(req, res, next){
     const AuthorizationToken = req.headers['authorization'];
         // console.log(req.headers)
@@ -19,14 +20,15 @@ async function auth(req, res, next){
                 // console.log(token);
                 let userFind = jwt.decode(token)
                 console.log(userFind);
-                userFind = await user.findById({_id:userFind._id})
+                userFind = await userModel.findById({_id:userFind._id})
                 userFind = userFind.toJSON();
                 delete userFind.password;
-                req.userFind = userFind;
-
+                req.user = userFind;
+                // console.log(req.user)
                 next();
             }
-        }else{
+        }
+        else{
             return res.status(403).send({message:"No token available"})
         }
 }

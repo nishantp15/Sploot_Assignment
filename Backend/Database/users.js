@@ -4,16 +4,12 @@ const userSchema = mongoose.Schema(
   {
     name: String,
     email: String,
-    gender: String,
     password: String,
-    image: String,
-    githubUsername:String,
-    signinMethod:String,
-    
+    age: String,
   },
   { timestamps: true }
 );
 
-const user = mongoose.model('user', userSchema);
+const userModel = mongoose.model('user', userSchema);
 
-module.exports = {user}
+module.exports = {userModel}
