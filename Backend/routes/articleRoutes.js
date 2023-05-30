@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 const articleControllers = require('../controllers/articleController');
 
 // READ
-articleRouter.get('/articles', async (req, res) => {
+articleRouter.get('/articles',auth, async (req, res) => {
 
     const {
         page = 1,
@@ -20,13 +20,18 @@ articleRouter.get('/articles', async (req, res) => {
     });
 
     res.send({
-        totalRecords: totalarticles,
-        data: articles
-    })
+        statusCode: 200,
+        data: {
+            totalRecords: totalarticles,
+            data: articles
+        },
+        error: "NA",
+        message: "NA",
+      })
 })
 
 // READ
-articleRouter.get('/article/:id', async (req, res) => {
+articleRouter.get('/article/:id',auth, async (req, res) => {
 
     const id = req.params.id;
 
@@ -37,19 +42,33 @@ articleRouter.get('/article/:id', async (req, res) => {
         console.error(err.message);
 
         return res.status(500).send({
-            // message: 'Server ran into an unexpected error'
-            message: err.message
-        })
+            statusCode: 500,
+            data: {
+              data: {},
+            },
+            error: err.message, 
+            message: "Something went wrong"
+          })
     }
 
     if (article) {
-        return res.send({
-            data: article
-        })
+        return res.status(200).send({
+            statusCode: 200,
+            data: {
+              data: article,
+            },
+            error: "NA",
+            message: "NA",
+          })
     } else {
         return res.status(404).send({
+            statusCode: 404,
+            data: {
+              data: {},
+            },
+            error: err.message, 
             message: 'article with given id does not exist'
-        })
+          })
     }
 
 })
@@ -68,13 +87,23 @@ articleRouter.post('/users/:userId/articles', auth, async (req, res) => {
         console.error(err.message);
 
         return res.status(500).send({
-            message: err.message // 'Server ran into an unexpected error'
-        })
+            statusCode: 500,
+            data: {
+              data: {},
+            },
+            error: err.message, 
+            message: "Something went wrong"
+          })
     }
 
     return res.send({
-        data: article
-    });
+        statusCode: 200,
+        data: {
+          data: article,
+        },
+        error: "NA",
+        message: "NA",
+      });
 })
 
 // UPDATE
@@ -92,13 +121,23 @@ articleRouter.patch('/article/:id', auth, async (req, res) => {
         console.error(err.message);
 
         return res.status(500).send({
-            message: err.message // 'Server ran into an unexpected error'
-        })
+            statusCode: 500,
+            data: {
+              data: {},
+            },
+            error: err.message, 
+            message: "Something went wrong"
+          })
     }
 
     return res.send({
-        data: article
-    });
+        statusCode: 200,
+        data: {
+          data: article,
+        },
+        error: "NA",
+        message: "NA",
+      });
 })
 
 // DELETE
@@ -114,18 +153,33 @@ articleRouter.delete('/article/:id', auth, async (req, res) => {
         console.error(err.message);
 
         return res.status(500).send({
-            message: err.message // 'Server ran into an unexpected error'
-        })
+            statusCode: 500,
+            data: {
+              data: {},
+            },
+            error: err.message, 
+            message: "Something went wrong"
+          })
     }
 
     if (article) {
         return res.send({
-            data: article
-        })
+            statusCode: 200,
+            data: {
+              data: article,
+            },
+            error: "NA",
+            message: "NA",
+          })
     } else {
         return res.status(404).send({
+            statusCode: 404,
+            data: {
+              data: {},
+            },
+            error: err.message, 
             message: 'article with given id does not exist'
-        })
+          })
     }
 })
 

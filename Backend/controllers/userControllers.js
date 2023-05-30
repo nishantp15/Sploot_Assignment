@@ -4,33 +4,31 @@ const jwt = require('jsonwebtoken');
 const configs = require('../configs/config');
 const { JWT_SECRET_KEY } = require('../configs/config');
 
-async function signup(req, res){
-    try{
-        const {name, email, password} = req.body;
-         const alreadyExisting = await userModel.findOne({email});
-         if(alreadyExisting){
-            return res.status(500).send('user with email already exist');
-         }
-         const hashedPassword = await bcrypt.hash(password, 11);
-        const CreateUser = await userModel.create({name, email, password:hashedPassword,  signinMethod:'Email' })
-
-        return res.send('registration sucessful')
-
-
-    }catch(err){
-        res.status(500).send('Something went wrong')
-    }
-}
-
 function getToken(user){
     let{_id, name, email, image} = user;
     return jwt.sign({_id, name, email, image},JWT_SECRET_KEY)
 }
 
-async function login(req, res){
-    try{
-        const {email, password} = req.body;
-        
+async function signup(data){
+    
+        const {name, email, age, password} = data;
+         const alreadyExisting = await userModel.findOne({email});
+         if(alreadyExisting){
+            return res.status(500).send('user with email already exist');
+         }
+         const hashedPassword = await bcrypt.hash(password, 11);
+        const createdUser = await userModel.create({name, email, password:hashedPassword,  signinMethod:'Email' })
+
+        createdUser = createdUser.toJSON();
+        return createdUser;
+        // return res.send('registration sucessful')
+}
+
+
+
+async function login(data){
+        const {email, password} = data;
+        console.log(email)
         let FindUSer = await userModel.findOne({email});
 
         if(!FindUSer){
@@ -44,28 +42,11 @@ async function login(req, res){
 
         const token = getToken(FindUSer)
 
-        return res.status(200).send({
-            message:"Success",
-            Data:{
-                token
-            }
-        })
-
-    }catch(err){
-        res.status(500).send('Something went wrong')
-    }
+        return token;
 }
 
 
 
-async function getLoggedinUser(req, res){
-    try{
-        let userFind = req.userFind;
-       return res.send({data:userFind})
-    }catch(err){
-        res.status(500).send('Something went wrong')
-    }
-}
 
 async function updateUser(userId, name, age) {
     
@@ -91,4 +72,4 @@ async function updateUser(userId, name, age) {
     return user;
 }
 
-module.exports = {signup,login, getLoggedinUser, updateUser}
+module.exports = {signup,login, updateUser}
