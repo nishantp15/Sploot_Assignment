@@ -25,6 +25,7 @@ userRouter.post("/signup", async (req, res) => {
         error: err.message,
       });
     } else {
+      console.log(err)
       return res.status(500).send({
         statusCode: 500,
         data: {

@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const app  =  express();
 
+const {PORT} = require('./configs/config')
 const {ConnectDB} = require('./Database/connectDB');
 const userRouter = require('./routes/userRoutes');
 const articleRouter = require("./routes/articleRoutes");
@@ -20,9 +21,11 @@ async function logRequest(req, res, next){
     next();
 };
 
+portAddress = PORT || 3030
+
 ConnectDB().then(()=>{
-    app.listen(3040, ()=>{
-        console.log('Listening on 3040')
+    app.listen(PORT, ()=>{
+        console.log(`Listening on ${PORT}`)
     })
 });
 

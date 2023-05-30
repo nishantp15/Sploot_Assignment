@@ -1,7 +1,6 @@
 const {userModel} = require('../Database/users')
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-const configs = require('../configs/config');
 const { JWT_SECRET_KEY } = require('../configs/config');
 
 function getToken(user){
@@ -14,12 +13,12 @@ async function signup(data){
         const {name, email, age, password} = data;
          const alreadyExisting = await userModel.findOne({email});
          if(alreadyExisting){
-            return res.status(500).send('user with email already exist');
+            throw new Error('User already exists with the given email');
          }
          const hashedPassword = await bcrypt.hash(password, 11);
-        const createdUser = await userModel.create({name, email, password:hashedPassword,  signinMethod:'Email' })
-
+        let createdUser = await userModel.create({name, email, age, password:hashedPassword,  signinMethod:'Email' })
         createdUser = createdUser.toJSON();
+        delete createdUser.password;
         return createdUser;
         // return res.send('registration sucessful')
 }
@@ -32,12 +31,12 @@ async function login(data){
         let FindUSer = await userModel.findOne({email});
 
         if(!FindUSer){
-            return res.send('user does not exist')
+            throw new Error('User does not exist with the given email');
         }
         const matchPassword = await bcrypt.compare(password, FindUSer.password);
 
         if(!matchPassword){
-            return res.send('wrong password');
+            throw new Error('The password is incorrect');
         }
 
         const token = getToken(FindUSer)
@@ -67,7 +66,7 @@ async function updateUser(userId, name, age) {
         }
     })
 
-    user = await userModel.findById(userId);
+    user = await userModel.findById(userId,{password:0});
 
     return user;
 }
