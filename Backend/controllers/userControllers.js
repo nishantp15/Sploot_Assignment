@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET_KEY } = require('../configs/config');
 
 function getToken(user){
-    let{_id, name, email, image} = user;
-    return jwt.sign({_id, name, email, image},JWT_SECRET_KEY)
+    let{_id, name, email} = user;
+    return jwt.sign({_id, name, email},JWT_SECRET_KEY)
 }
 
 async function signup(data){
@@ -27,7 +27,7 @@ async function signup(data){
 
 async function login(data){
         const {email, password} = data;
-        console.log(email)
+       
         let FindUSer = await userModel.findOne({email});
 
         if(!FindUSer){
