@@ -18,16 +18,17 @@ function Login() {
     function handleSubmit(e){
       e.preventDefault();
       setDisable(true)
-      fetch(`https://reqres.in/api/login`,{
+      fetch(`https://sploot-assignment-nu.vercel.app/login`,{
         method:"POST",
         headers:{'content-type':"application/json"},
         body:JSON.stringify(user)
-      }).then(res=>res.json()).then(val=>loginUser(val.token))
+      }).then(res=>{
+        return res.json()}).then(val=>loginUser(val.data.data))
     }
   return (
     <>    {authState.isAuth ? (<Navigate to="/dashboard"/>):
     (<div className="login-page">
-    <form className="form" data-testid="login-form" onSubmit={handleSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
       <div>
         <label>
           <input data-testid="email-input" name="email" type="email" onChange={handleChange} placeholder="email" />
@@ -36,7 +37,6 @@ function Login() {
       <div>
         <label>
           <input
-            data-testid="password-input"
             type="password"
             name="password"
             onChange={handleChange}
@@ -45,7 +45,7 @@ function Login() {
         </label>
       </div>
       <div>
-        <button data-testid="form-submit" type="submit" disabled={disable}>
+        <button type="submit" disabled={disable}>
           SUBMIT
         </button>
       </div>

@@ -2,7 +2,6 @@ import Home from './Home'
 import { Route, Routes } from 'react-router-dom';
 import Dashboard from './Dashboard'
 import Login from './Login'
-import RestaurantPage from './RestaurantPage'
 import PrivateRoute from '../Components/PrivateRoute';
 function AllRoutes() {
   
@@ -13,9 +12,6 @@ function AllRoutes() {
     <Route path='/dashboard' element={<PrivateRoute>
       <Dashboard/>
     </PrivateRoute>}/>
-    <Route path='/restaurants/:id' element={<PrivateRoute>
-      <RestaurantPage/>
-    </PrivateRoute>} />
     </Routes>
   </div>;
 }
