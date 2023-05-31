@@ -4,7 +4,6 @@ const {userModel} = require('../Database/users')
 
 async function auth(req, res, next){
     const AuthorizationToken = req.headers['authorization'];
-        // console.log(req.headers)
         if(AuthorizationToken){
             const token = AuthorizationToken.split(' ').pop();
             
@@ -17,14 +16,12 @@ async function auth(req, res, next){
                         message:'Invalid token provided'
                     })
                 }
-                // console.log(token);
-                let userFind = jwt.decode(token)
-                console.log(userFind);
+              
+                let userFind = jwt.decode(token);
                 userFind = await userModel.findById({_id:userFind._id})
                 userFind = userFind.toJSON();
                 delete userFind.password;
                 req.user = userFind;
-                // console.log(req.user)
                 next();
             }
         }

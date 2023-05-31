@@ -20,7 +20,6 @@ async function signup(data){
         createdUser = createdUser.toJSON();
         delete createdUser.password;
         return createdUser;
-        // return res.send('registration sucessful')
 }
 
 
