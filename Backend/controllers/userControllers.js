@@ -18,7 +18,7 @@ async function signup(data){
          const hashedPassword = await bcrypt.hash(password, 11);
         let createdUser = await userModel.create({name, email, age, password:hashedPassword,  signinMethod:'Email' })
         createdUser = createdUser.toJSON();
-        delete createdUser.password;
+        // delete createdUser.password;  // delete password from api response
         return createdUser;
 }
 
@@ -65,7 +65,9 @@ async function updateUser(userId, name, age) {
         }
     })
 
-    user = await userModel.findById(userId,{password:0});
+    // user = await userModel.findById(userId,{password:0});  // to avoid including password fromthe response
+    
+    user = await userModel.findById(userId); 
 
     return user;
 }
