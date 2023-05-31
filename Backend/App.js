@@ -17,6 +17,17 @@ app.use(cors());
 app.use('/', userRouter);
 app.use('/', articleRouter);
 
+app.use('/*', (req, res) => {
+    return res.status(404).send({
+        statusCode: 404,
+        data: {
+          data: {},
+        },
+        error: err.message,
+        message: "Address not found",
+      })
+});
+
 async function logRequest(req, res, next){
     next();
 };
