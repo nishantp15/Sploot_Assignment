@@ -39,8 +39,6 @@ articleRouter.get('/article/:id',auth, async (req, res) => {
     try {
         article = await articleControllers.findById(id);
     } catch(err) {
-        console.error(err.message);
-
         return res.status(500).send({
             statusCode: 500,
             data: {
@@ -66,7 +64,6 @@ articleRouter.get('/article/:id',auth, async (req, res) => {
             data: {
               data: {},
             },
-            error: err.message, 
             message: 'article with given id does not exist'
           })
     }
@@ -84,8 +81,6 @@ articleRouter.post('/users/:userId/articles', auth, async (req, res) => {
     try {
         article = await articleControllers.createarticle(userId, articleData);
     } catch(err) {
-        console.error(err.message);
-
         return res.status(500).send({
             statusCode: 500,
             data: {
@@ -118,8 +113,6 @@ articleRouter.patch('/article/:id', auth, async (req, res) => {
     try {
         article = await articleControllers.updatearticle(userId, id, articleData);
     } catch(err) {
-        console.error(err.message);
-
         return res.status(500).send({
             statusCode: 500,
             data: {
@@ -150,8 +143,6 @@ articleRouter.delete('/article/:id', auth, async (req, res) => {
     try {
         article = await articleControllers.deletearticle(userId, id);
     } catch(err) {
-        console.error(err.message);
-
         return res.status(500).send({
             statusCode: 500,
             data: {

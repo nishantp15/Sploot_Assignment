@@ -25,7 +25,6 @@ userRouter.post("/signup", async (req, res) => {
         error: err.message,
       });
     } else {
-      console.log(err)
       return res.status(500).send({
         statusCode: 500,
         data: {
@@ -42,9 +41,14 @@ userRouter.post("/signup", async (req, res) => {
 
 userRouter.post("/login", async (req, res) => {
   const body = req.body;
-  console.log(body);
   try {
     const token = await login(body);
+
+    res.cookie("access_token", token, {
+      expires: new Date(Date.now() + 100000),
+      httpOnly: true,
+      secure: true,
+    });
 
     return res.send({
         statusCode: 200,

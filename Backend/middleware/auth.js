@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const {userModel} = require('../Database/users')
 
 async function auth(req, res, next){
-    const AuthorizationToken = req.headers['authorization'];
+    const AuthorizationToken = req.headers['authorization'] || req.cookies.access_token;;
         if(AuthorizationToken){
             const token = AuthorizationToken.split(' ').pop();
             
