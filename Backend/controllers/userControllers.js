@@ -5,7 +5,7 @@ const { JWT_SECRET_KEY } = require('../configs/config');
 
 function getToken(user){
     let{_id, name, email} = user;
-    return jwt.sign({_id, name, email},JWT_SECRET_KEY)
+    return jwt.sign({_id, name, email},process.env.JWT_SECRET_KEY)
 }
 
 async function signup(data){

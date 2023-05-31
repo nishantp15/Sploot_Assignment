@@ -11,7 +11,7 @@ async function auth(req, res, next){
             if(token){
                 
                 try{
-                   jwt.verify(token,JWT_SECRET_KEY)
+                   jwt.verify(token,process.env.JWT_SECRET_KEY)
                 }catch(err){
                     return res.status(401).send({
                         message:'Invalid token provided'
